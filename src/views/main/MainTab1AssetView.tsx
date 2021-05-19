@@ -221,8 +221,6 @@ export function MainTab1AssetView(props: {
                 </View>
 
                 {props.info.list.map((item, index) => {
-                  if (item.symbol.toLowerCase() === 'mir') return null
-
                   return (
                     <ItemView
                       key={index}

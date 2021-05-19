@@ -43,6 +43,7 @@ export const en = {
   mainView: {
     portfolio: 'Portfolio',
     invest: 'Invest',
+    farming: 'Farming',
     searchPlaceholder: 'Discover a Mirror Asset',
   },
   mainTab1View: {
@@ -60,6 +61,14 @@ export const en = {
     symbol: 'UST',
   },
   mainTab2View: {
+    mirrorAsset: 'Mirror Asset',
+    sortby: 'Sort by',
+    done: 'Done',
+    ticker: 'Ticker',
+    price: 'Price',
+    change: '% Change',
+  },
+  mainTab3View: {
     mirrorAsset: 'Mirror Asset',
     sortby: 'Sort by',
     done: 'Done',
@@ -390,6 +399,7 @@ export const ko = {
   mainView: {
     portfolio: 'Portfolio',
     invest: 'Invest',
+    farming: 'Farming',
     searchPlaceholder: 'Discover a Mirror Asset',
   },
   mainTab1View: {
@@ -407,6 +417,14 @@ export const ko = {
     symbol: 'UST',
   },
   mainTab2View: {
+    mirrorAsset: 'Mirror Asset',
+    sortby: 'Sort by',
+    done: 'Done',
+    ticker: 'Ticker',
+    price: 'Price',
+    change: '% Change',
+  },
+  mainTab3View: {
     mirrorAsset: 'Mirror Asset',
     sortby: 'Sort by',
     done: 'Done',

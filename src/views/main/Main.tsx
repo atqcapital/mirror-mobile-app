@@ -6,6 +6,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import { TouchableOpacity, RectButton } from 'react-native-gesture-handler'
 import { MainTab1 } from './MainTab1'
 import { MainTab2 } from './MainTab2'
+import { MainTab3 } from './MainTab3'
 import { BlurView } from '@react-native-community/blur'
 import { ConfigContext } from '../../common/provider/ConfigProvider'
 import { Search } from './Search'
@@ -30,13 +31,22 @@ export function Main(props: { navigation: any; route: any }) {
     x: 0,
     width: 0,
   })
+  const [measuredText3Layout, setMeasuredText3Layout] = useState({
+    x: 0,
+    width: 0,
+  })
 
   const scrollX = useRef(new Animated.Value(0)).current
   const tab2ScrollY = useRef(new Animated.Value(0)).current
+  const tab3ScrollY = useRef(new Animated.Value(0)).current
   const scrollXRef = useRef(0)
   const headerIndicatorLeft = scrollX.interpolate({
-    inputRange: [0, Resources.windowSize().width],
-    outputRange: [38, 122],
+    inputRange: [
+      0,
+      Resources.windowSize().width,
+      Resources.windowSize().width * 2,
+    ],
+    outputRange: [38, 122, 200],
     extrapolate: 'clamp',
   })
   const headerIndicatorWidth = scrollX.interpolate({
@@ -44,23 +54,41 @@ export function Main(props: { navigation: any; route: any }) {
       0,
       Resources.windowSize().width / 2,
       Resources.windowSize().width,
+      Resources.windowSize().width * 2 * 3,
+      Resources.windowSize().width * 2 * 4,
     ],
-    outputRange: [measuredText1Layout.width, 90, measuredText2Layout.width],
+    outputRange: [
+      measuredText1Layout.width,
+      90,
+      measuredText2Layout.width,
+      90,
+      measuredText3Layout.width,
+    ],
     extrapolate: 'clamp',
   })
 
+  // const [tempPos, setTempPos] = useState(0);
   scrollX.addListener((e) => {
     const offset = 30
     const x = e.value
     scrollXRef.current = x
+    // setTempPos(x)
+    const windowSize = Resources.windowSize().width
+    // console.log({ x, offset,windowSize })
     if (
       parseInt(x.toString()) >=
-      parseInt(Resources.windowSize().width.toString()) - offset
+      parseInt((windowSize * 2).toString()) - offset
+    ) {
+      setTab(2)
+    } else if (
+      parseInt(x.toString()) >=
+      parseInt(windowSize.toString()) - offset
     ) {
       setTab(1)
     } else if (x <= 0 + offset) {
       setTab(0)
     } else {
+      setTab(0)
     }
   })
 
@@ -117,7 +145,15 @@ export function Main(props: { navigation: any; route: any }) {
           selectedTab={selectedTab}
           tab2ScrollY={tab2ScrollY}
           assetList={assetList}
+          setShowSearchView={setShowSearchView}
         />
+        {/* <MainTab3
+          navigation={props.navigation}
+          selectedTab={selectedTab}
+          tab2ScrollY={tab3ScrollY}
+          assetList={assetList}
+          setShowSearchView={setShowSearchView}
+        /> */}
 
         <View
           style={{
@@ -142,14 +178,14 @@ export function Main(props: { navigation: any; route: any }) {
             <BlurView style={{ width: '100%', height: '100%' }} />
           )}
         </View>
-        <View
+        {/* <View
           style={{
             position: 'absolute',
             left: Resources.windowSize().width,
             top: 0,
             overflow: 'hidden',
             width: '100%',
-            height: 150 + safeInsetTop,
+            height: 135 + safeInsetTop,
           }}
         >
           {Platform.OS === 'android' ? (
@@ -164,57 +200,23 @@ export function Main(props: { navigation: any; route: any }) {
           ) : (
             <BlurView style={{ width: '100%', height: '100%' }} />
           )}
-        </View>
-        <Animated.View
-          style={{
-            transform: [{ translateY: searchBarMarginTop }],
-            position: 'absolute',
-            top: 52 + safeInsetTop,
-            left: Resources.windowSize().width,
-            width: Resources.windowSize().width,
-          }}
-        >
-          <RectButton
-            style={{
-              marginTop: 48,
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: Resources.Colors.darkGreyFour,
-              borderRadius: 16,
-              height: 64,
-              marginLeft: 24,
-              marginRight: 24,
-            }}
-            onPress={() => {
-              setShowSearchView(true)
-            }}
-          >
-            <Image
-              style={{ width: 14, height: 14, marginLeft: 16 }}
-              source={Resources.Images.iconSearch}
-            />
-            <Text
-              style={{
-                marginLeft: 6,
-                fontFamily: Resources.Fonts.book,
-                fontSize: 14,
-                letterSpacing: -0.5,
-                color: Resources.Colors.greyishBrown,
-              }}
-            >
-              {translations.mainView.searchPlaceholder}
-            </Text>
-          </RectButton>
-        </Animated.View>
+        </View> */}
       </Animated.ScrollView>
 
       <Header
         selectedTab={selectedTab}
         setMeasuredText1Layout={setMeasuredText1Layout}
         setMeasuredText2Layout={setMeasuredText2Layout}
+        setMeasuredText3Layout={setMeasuredText3Layout}
         setTab={(index: number) => {
           if (scrollView.current) {
-            const x = index != 0 ? Resources.windowSize().width : 0
+            // On click scroll position
+            const x =
+              index === 0
+                ? 0
+                : index === 1
+                ? Resources.windowSize().width
+                : Resources.windowSize().width * 2
             scrollView.current.scrollTo({
               x: x,
               y: 0,
@@ -230,7 +232,7 @@ export function Main(props: { navigation: any; route: any }) {
       <Animated.View
         style={{
           position: 'absolute',
-          left: 24,
+          left: 22,
           transform: [
             { translateX: headerIndicatorLeft },
             {
@@ -267,6 +269,7 @@ function Header(props: {
   walletPressed: () => void
   setMeasuredText1Layout: any
   setMeasuredText2Layout: any
+  setMeasuredText3Layout: any
 }) {
   const { translations } = useContext(ConfigContext)
   const safeInsetTop = Resources.getSafeLayoutInsets().top
@@ -338,6 +341,35 @@ function Header(props: {
         </Text>
         <View style={{ height: 5 }} />
       </TouchableOpacity>
+
+      {/* <TouchableOpacity
+        style={{ marginLeft: 18 }}
+        onPress={() => {
+          props.setTab(2)
+        }}
+      >
+        <Text
+          allowFontScaling={false}
+          style={{
+            fontFamily: Resources.Fonts.medium,
+            fontSize: 18,
+            letterSpacing: -0.2,
+            color:
+              props.selectedTab == 2
+                ? Resources.Colors.brightTeal
+                : Resources.Colors.greyishBrown,
+          }}
+          onLayout={(e) => {
+            props.setMeasuredText3Layout({
+              x: e.nativeEvent.layout.x,
+              width: e.nativeEvent.layout.width,
+            })
+          }}
+        >
+          {translations.mainView.farming}
+        </Text>
+        <View style={{ height: 5 }} />
+      </TouchableOpacity> */}
 
       <ThrottleButton
         type='RectButton'

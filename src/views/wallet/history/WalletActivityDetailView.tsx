@@ -17,9 +17,9 @@ export function WalletActivityDetailView(props: {
   const safeInsetTop = Resources.getSafeLayoutInsets().top
   const item = props.route.params
 
-  const converted = new BigNumber(item.amount.converted).dividedBy(1000000)
-  const amount = new BigNumber(item.amount.amount).dividedBy(1000000)
-  const feeAmount = new BigNumber(item.fee.amount).dividedBy(1000000)
+  const converted = new BigNumber(item.amount.converted).dividedBy(1e6)
+  const amount = new BigNumber(item.amount.amount).dividedBy(1e6)
+  const feeAmount = new BigNumber(item.fee.amount).dividedBy(1e6)
 
   const isMAsset =
     (item.amount.denom as string).startsWith('m') ||

@@ -213,7 +213,7 @@ function List(props: {
         }}
       />
 
-      {!props.denom?.startsWith('m') && props.denom?.toLowerCase() !== 'mir' && (
+      {!props.denom?.startsWith('m') && (
         <ItemView
           title={translations.walletActivityFilterView.swap}
           selected={props.value == Api.HistoryType.SWAP}

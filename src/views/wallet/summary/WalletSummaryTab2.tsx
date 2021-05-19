@@ -52,8 +52,6 @@ function ItemView(props: {
   const name = item.name
   const amount = new BigNumber(item.amount)
 
-  if (symbol.toLowerCase() === 'mir' && amount.isEqualTo(0)) return null
-
   return (
     <ThrottleButton
       type='TouchableOpacity'

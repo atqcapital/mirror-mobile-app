@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "clean-build": "cd android && ./gradlew clean && ./gradlew app:assembleRelease"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/clipboard": "^1.2.1",
     "@react-native-community/cookies": "^5.0.1",
@@ -47,7 +49,7 @@
     "node-libs-react-native": "^1.2.1",
     "ramda": "^0.27.1",
     "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react-native": "^0.64.0",
     "react-native-app-settings": "^2.0.1",
     "react-native-argon2": "^0.1.0",
     "react-native-camera": "^3.26.0",
@@ -70,7 +72,7 @@
     "react-native-securerandom": "^1.0.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-status-bar-height": "^2.5.0",
-    "react-native-svg": "^12.1.0",
+    "react-native-svg": "^12.1.1-0",
     "react-native-svg-charts": "^5.4.0",
     "react-native-swiper": "^1.6.0",
     "react-native-touch-id": "^4.4.1",

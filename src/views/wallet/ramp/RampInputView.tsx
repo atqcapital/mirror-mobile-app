@@ -108,7 +108,6 @@ const RampInputView = (props: { navigation: any; route: any }) => {
   const [positionPay, setPositionPay] = useState({ y: 0, height: 0 })
 
   const [fromAmount, setFromAmount] = useState('')
-  const [toAmount, setToAmount] = useState('')
 
   const [ustBalance, setUstBalance] = useState<BigNumber>(new BigNumber(0))
   const [withdrawAmount, setWithdrawAmount] = useState<BigNumber>(
@@ -439,7 +438,6 @@ const RampInputView = (props: { navigation: any; route: any }) => {
                   updatePairOffer(selected.value)
                 }}
                 fromAmountChanged={setFromAmount}
-                toAmountChanged={setToAmount}
                 setPreventEvent={setPreventEvent}
                 withdraw={isWithdraw}
                 amount={withdrawAmount.dividedBy(1e6)}
@@ -468,25 +466,21 @@ const RampInputView = (props: { navigation: any; route: any }) => {
         nextPressed={() => {
           if (nextEnable) {
             isWithdraw
-              ? props.navigation.replace('RampOfferView', {
+              ? props.navigation.navigate('RampOfferView', {
                   denom: selected.value,
                   refundAddress,
                   memo,
                   pair: getPairName(selected.value, true),
                   fromAmount,
-                  quote: quote.toString(),
-                  minerFee: minerFee.toString(),
                   signature,
                   withdraw: true,
                 })
-              : props.navigation.replace('RampOfferView', {
+              : props.navigation.navigate('RampOfferView', {
                   denom: selected.value,
                   refundAddress,
                   memo,
                   pair: getPairName(selected.value),
                   fromAmount,
-                  quote: quote.toString(),
-                  minerFee: minerFee.toString(),
                   signature,
                   withdraw: false,
                 })

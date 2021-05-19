@@ -26,10 +26,10 @@ interface GQL_AssetList1 {
   symbol: string
   name: string
   category: string
-  price: string
-  amount: string
+  price: string | number
+  amount: string | number
   yesterday: string
-  dayDiff: string
+  dayDiff: string | number
   averagePrice: string
   ret: string
 }

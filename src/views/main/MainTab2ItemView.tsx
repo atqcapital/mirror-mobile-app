@@ -15,7 +15,6 @@ export function MainTab2ItemView(props: {
   showPercent: boolean
 }) {
   const item = props._item.item as GQL_AssetList1
-  if (item.symbol.toLowerCase() === 'mir') return null
 
   const disable = item.price === 'NaN' ? true : false
 
@@ -48,7 +47,7 @@ export function MainTab2ItemView(props: {
       <PriceView
         setShowPercent={props.setShowPercent}
         showPercent={props.showPercent}
-        dayDiff={item.dayDiff}
+        dayDiff={item.dayDiff as string}
         price={item.price}
         disable={disable}
       />
@@ -144,7 +143,7 @@ function PriceView(props: {
   setShowPercent: (b: boolean) => void
   showPercent: boolean
   dayDiff: string
-  price: string
+  price: string | number
   disable: boolean
 }) {
   const price: BigNumber = new BigNumber(props.price)

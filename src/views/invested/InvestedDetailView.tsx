@@ -14,6 +14,7 @@ import {
   RefreshControl,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native'
 import * as Resources from '../../common/Resources'
 import * as Utils from '../../common/Utils'
@@ -26,11 +27,11 @@ import {
 } from 'react-native-gesture-handler'
 import BigNumber from 'bignumber.js'
 import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { MainChartView } from '../main/MainChartView'
 import { NavigationView } from '../common/NavigationView'
 import { ConfigContext } from '../../common/provider/ConfigProvider'
 import ThrottleButton from '../../component/ThrottleButton'
-
 export function InvestedDetailView(props: { route: any; navigation: any }) {
   const safeInsetTop = Resources.getSafeLayoutInsets().top
   const safeInsetBottom = Resources.getSafeLayoutInsets().bottom
@@ -40,6 +41,12 @@ export function InvestedDetailView(props: { route: any; navigation: any }) {
 
   const [loaded, setLoaded] = useState(false)
   const [isFavorite, setFavorite] = useState(false)
+  const [favourite, setFavourite] = useState(false)
+
+  const favoriteAction = () => {
+    var favourites = AsyncStorage.getItem('favourites')
+    console.log(favourites)
+  }
   const [investedInfo, setInvestedInfo] = useState({
     symbol: '',
     name: '',
@@ -256,7 +263,10 @@ export function InvestedDetailView(props: { route: any; navigation: any }) {
       setFavorite(f)
     })
   }
-
+  function toggleFavorite() {
+    Keychain.toggleFavorite(symbol)
+    setFavorite(!isFavorite)
+  }
   return (
     <View
       style={{
@@ -286,40 +296,55 @@ export function InvestedDetailView(props: { route: any; navigation: any }) {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={{ height: 52 }} />
+        <View style={{ height: 52, flexDirection: 'row' }} />
         <View
           style={{
             marginTop: 36,
             marginLeft: 24,
             marginRight: 24,
             flexDirection: 'row',
-            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            // alignItems: 'flex-end',
           }}
         >
-          <Text
-            style={{
-              fontFamily: Resources.Fonts.bold,
-              fontSize: 18,
-              letterSpacing: -0.5,
-              color: Resources.Colors.white,
-            }}
-          >
-            {Utils.getDenom(investedInfo.symbol)}
-          </Text>
-          <Text
-            numberOfLines={1}
-            ellipsizeMode={'tail'}
-            style={{
-              marginLeft: 3,
-              marginBottom: Platform.OS === 'android' ? 4 : 1,
-              fontFamily: Resources.Fonts.medium,
-              fontSize: 12,
-              letterSpacing: -0.23,
-              color: Resources.Colors.greyishBrown,
-            }}
-          >
-            {investedInfo.name}
-          </Text>
+          <View>
+            <Text
+              style={{
+                fontFamily: Resources.Fonts.bold,
+                fontSize: 18,
+                letterSpacing: -0.5,
+                color: Resources.Colors.white,
+              }}
+            >
+              {Utils.getDenom(investedInfo.symbol)}{' '}
+              <Text
+                style={{
+                  fontSize: 12,
+                  // letterSpacing: -0.23,
+                  color: Resources.Colors.greyishBrown,
+                }}
+              >
+                {' '}
+                {investedInfo.name}
+              </Text>
+            </Text>
+          </View>
+          <View style={{ alignSelf: 'flex-end' }}>
+            <TouchableOpacity onPress={() => toggleFavorite()}>
+              <Image
+                style={{
+                  marginLeft: 12,
+                  width: 30,
+                  height: 30,
+                }}
+                source={
+                  isFavorite
+                    ? Resources.Images.iconFavactive
+                    : Resources.Images.iconFavdefault
+                }
+              />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <SummaryView

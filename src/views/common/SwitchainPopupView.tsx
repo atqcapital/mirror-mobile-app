@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { Text, View, Animated, Platform, Image } from 'react-native'
+import { Text, View, Animated, Platform } from 'react-native'
 import * as Resources from '../../common/Resources'
 import {
   RectButton,
@@ -8,7 +8,6 @@ import {
 } from 'react-native-gesture-handler'
 import { ConfigContext } from '../../common/provider/ConfigProvider'
 import * as Keychain from '../../common/Keychain'
-import * as Utils from '../../common/Utils'
 
 export function SwitchainPopupView(props: {
   navigation: any
@@ -238,40 +237,32 @@ const Content = (props: {
             onPress={() => {
               props.dismissPressed()
 
-              if (props.state === 'completed') {
-                if (props.route.name === 'RampSelectView') {
-                  props.navigation.navigate('WalletStack', {
-                    screen: 'WalletDetailView',
-                    params: {
-                      symbol: Keychain.baseCurrency,
-                    },
-                  })
-                } else {
-                  props.navigation.push('WalletDetailView', {
+              if (props.route.name === 'RampSelectView') {
+                // props.navigation.pop()
+                props.navigation.navigate('WalletStack', {
+                  screen: 'WalletDetailView',
+                  params: {
                     symbol: Keychain.baseCurrency,
-                  })
-                }
+                  },
+                })
               } else {
-                Utils.contactUs()
+                props.navigation.push('WalletDetailView', {
+                  symbol: Keychain.baseCurrency,
+                })
               }
             }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text
-                style={{
-                  fontFamily: Resources.Fonts.book,
-                  fontSize: 14,
-                  letterSpacing: -0.2,
-                  color: Resources.Colors.brightTeal,
-                }}
-              >
-                {props.state === 'completed' ? `Details` : `Further Inquiries`}
-              </Text>
-              <Image
-                source={Resources.Images.chevronR10G}
-                style={{ width: 8, height: 10, marginLeft: 4 }}
-              />
-            </View>
+            <Text
+              style={{
+                fontFamily: Resources.Fonts.book,
+                fontSize: 14,
+                letterSpacing: -0.2,
+                color: Resources.Colors.brightTeal,
+              }}
+            >
+              {props.state === 'completed' &&
+                translations.moonpayPopupView.details}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
